@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const JobCard = ({ job }) => (
   <div className="border p-5 rounded shadow-sm hover:shadow-md transition">
     <h3 className="text-xl font-semibold mb-1">{job.title}</h3>

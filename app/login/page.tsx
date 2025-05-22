@@ -41,9 +41,11 @@ export default function LoginPage() {
       alert('Login successful!');
       router.push('/');
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'An unexpected error occurred';
-      setError(errorMessage);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }

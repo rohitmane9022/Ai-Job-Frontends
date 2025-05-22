@@ -46,8 +46,6 @@ export default function LoginPage() {
       } else {
         setError('An unexpected error occurred');
       }
-    } finally {
-      setLoading(false);
     }
   };
 

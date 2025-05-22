@@ -4,9 +4,19 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { API_BASE_URL } from '@/lib/config';
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  location: string;
+  experience: string;
+  skills: string;
+  preferredJobType: string;
+}
+
 export default function SignupPage() {
   const router = useRouter();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormData>({
     name: '',
     email: '',
     password: '',
@@ -18,7 +28,9 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -28,8 +40,7 @@ export default function SignupPage() {
     setError('');
 
     try {
-     
-      const skillsArray = form.skills.split(',').map(s => s.trim());
+      const skillsArray = form.skills.split(',').map((s) => s.trim());
 
       const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: 'POST',
@@ -52,8 +63,10 @@ export default function SignupPage() {
 
       alert('Signup successful! Please login.');
       router.push('/login');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'An unexpected error occurred';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

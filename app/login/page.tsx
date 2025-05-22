@@ -4,9 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { API_BASE_URL } from '@/lib/config';
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState<FormData>({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -32,14 +37,13 @@ export default function LoginPage() {
       }
 
       const data = await res.json();
-
-      
       localStorage.setItem('token', data.token);
-
       alert('Login successful!');
-      router.push('/'); 
-    } catch (err: any) {
-      setError(err.message);
+      router.push('/');
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'An unexpected error occurred';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
